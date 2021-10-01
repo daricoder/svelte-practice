@@ -1,18 +1,12 @@
 <script>
   let persona = {
-    nombre: {
-      value: undefined,
-      regex: /^[a-zA-Z]+(\s{1}[a-zA-Z]+)*$/,
-      error: true,
-      errorInfo:
-        "Debe comenzar y terminar con letras no se aceptan numeros ni caracteres especiales ni dobles espacios entre palabras",
-    },
-    email: { value: undefined, regex: /^[a-zA-Z0-9@.]{5,20}$/, error: true },
-    edad: { value: undefined, error: true },
-    sexo: { value: "", error: true }, // on:change de radio input al obtener el binding en la funcion handle me daba undefined pero event.target.value si tenia valor entonces por eso opte utilizaar los beneficios de svelte haciendo todo reactivo.
-    pais: { value: "", error: true }, // ojo este vaue le paso al select inicialmente como valor del select pero si fuera undefined coje el primer valor de la lista de opciones. En este caso como el valor es "" y ninguna opcion tiene el value="" entonces no seleccionanada y queda en blanco.
-    redes_sociales: { value: "", error: true }, // ojo un bind:gruoup jamas puede ser undefined, el solito arma el arreglo cuando le doy en los checks
-    idiomas: { value: [], error: true },
+    nombre: "",
+    email: "",
+    edad: "",
+    sexo: "",
+    pais: "",
+    redes_sociales: "",
+    idiomas: "",
   };
 
   $: isFormValid = validateForm(persona);
@@ -25,26 +19,19 @@
 
   // Usando la reactividad no tengo que usar handlekeyup para manejar directamente como en angular era.
 
-  $: if (persona && name) {
-    let { value, regex } = persona[name];
-    console.log(value, name, value?.length);
-    if (!value ) {
-      console.log("entrando porque es vacio");
-      persona[name].error = true;
-    } else if (value && !regex) {
-      console.log("entrando porque no es vacio y no tiene regex", name, value);
-      persona[name].error = false;
-    } else if (value && regex) {
-      persona[name].error = !regex.test(value);
-    }
-  }
-  
-
   const validateForm = (object) => {
     for (const key in persona) {
-      const { error } = persona[key];
-      // console.log(error,key,persona[key])
-      if (error) {
+      console.log(
+        "hola",
+        key,
+        persona[key],
+        !persona[key],
+        typeof persona[key] === "array" && !persona[key].length > 0
+      );
+      if (
+        persona[key] == "" ||
+        (typeof persona[key] === "array" && !persona[key].length > 0)
+      ) {
         console.log("puto retornando falso");
         return false;
       }
@@ -54,7 +41,7 @@
   };
 
   const handleChange = (e) => {
-    console.log("handlechange", e.target.value,persona.idiomas.value);
+    console.log("handlechange", e.target.value, persona.idiomas.value);
     name = e.target.name;
   };
 </script>
@@ -69,22 +56,16 @@
       on:keyup={handleChange}
       name="nombre"
       type="text"
-      bind:value={persona.nombre.value}
+      bind:value={persona.nombre}
     />
-    {#if persona.nombre.error && persona.nombre.value}
-      <p class="error">{persona.nombre.errorInfo}</p>
-    {/if}
     <br />
     <span>email</span>
     <input
       on:keyup={handleChange}
       name="email"
       type="text"
-      bind:value={persona.email.value}
+      bind:value={persona.email}
     />
-    {#if persona.email.error && persona.email.value}
-      <p class="error">hay un error</p>
-    {/if}
     <br />
 
     <span>edad</span>
@@ -92,7 +73,7 @@
       on:keyup={handleChange}
       name="edad"
       type="number"
-      bind:value={persona.edad.value}
+      bind:value={persona.edad}
     />
     <br />
 
@@ -102,7 +83,7 @@
       on:change={handleChange}
       name="sexo"
       type="radio"
-      bind:group={persona.sexo.value}
+      bind:group={persona.sexo}
       value="Masculino"
     />
     <span>Femenino</span>
@@ -110,17 +91,13 @@
       on:change={handleChange}
       name="sexo"
       type="radio"
-      bind:group={persona.sexo.value}
+      bind:group={persona.sexo}
       value="Femenino"
     />
     <br />
 
     <span>pais</span>
-    <select
-      name="pais"
-      on:change={handleChange}
-      bind:value={persona.pais.value}
-    >
+    <select name="pais" on:change={handleChange} bind:value={persona.pais}>
       {#each paises as pais, i}
         <option value={pais}>
           {pais + i}
@@ -133,7 +110,7 @@
       {#each redes_sociales as red}
         <input
           type="checkbox"
-          bind:group={persona.redes_sociales.value}
+          bind:group={persona.redes_sociales}
           value={red}
           name="redes_sociales"
           on:change={handleChange}
@@ -148,34 +125,54 @@
       <select
         name="idiomas"
         on:change={handleChange}
-        bind:value={persona.idiomas.value}
+        bind:value={persona.idiomas}
         multiple
       >
         {#each idiomas as idioma}
-          <option value={idioma}>{idioma}</option>
+          <option value={{ idioma, nivel: 5 }}>{idioma}</option>
         {/each}
       </select>
       <br />
 
+      {#if persona.idiomas && persona.idiomas.length > 0}
+        <h4>Elige el nivel del idioma:</h4>
+      {/if}
 
-<!--       {#each persona.idiomas.value ? persona.idiomas.value : [] as idioma}
+      {#each persona.idiomas as idioma}
+        <div>
+          <p>Idioma:{idioma.idioma}</p>
+          <span>Nivel:{idioma.nivel}</span>
+          <input
+            type="range"
+            name="idiomas"
+            on:change={handleChange}
+            bind:value={idioma.nivel}
+            min="0"
+            max="10"
+          />
+        </div>
+      {/each}
+      <br />
+
+      <!--       {#each persona.idiomas.value ? persona.idiomas.value : [] as idioma}
         <label>
           <span>{idioma.idioma}</span>
           <span>{idioma.nivel}</span>
           <input type="range" bind:value={idioma.nivel} min="0" max="10" />
         </label>
       {/each} -->
+
+      <br />
+
+      <label>
+        <h5>Politicas</h5>
+        <input type="checkbox" bind:checked={isAgree} />
+        Estas de acuerdo con nuestras politicas?
+      </label>
+      <br />
+
+      <button disabled={!isFormValid || !isAgree}>Enviar</button>
     </div>
-    <br />
-
-    <label>
-      <h5>Politicas</h5>
-      <input type="checkbox" bind:checked={isAgree} />
-      Estas de acuerdo con nuestras politicas?
-    </label>
-    <br />
-
-    <button disabled={!isFormValid || !isAgree}>Enviar</button>
   </form>
   <h5>ESTADO DEL COMPONENTE</h5>
   <p>Persona: {JSON.stringify(persona)}</p>

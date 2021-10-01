@@ -5,7 +5,7 @@
 
 </script>
 
-<ReacTividad/>
+<!-- <ReacTividad/> -->
 <!-- no importa el nombre con el importa ya que es lo importa por default segun la documentacion -->
-<Nested nombre="Ruben" cualquier/>
+<!-- <Nested nombre="Ruben" cualquier/> -->
 <Bindings/>

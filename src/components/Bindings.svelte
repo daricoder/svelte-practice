@@ -21,13 +21,6 @@
 
   const validateForm = (object) => {
     for (const key in persona) {
-      console.log(
-        "hola",
-        key,
-        persona[key],
-        !persona[key],
-        typeof persona[key] === "array" && !persona[key].length > 0
-      );
       if (
         persona[key] == "" ||
         (typeof persona[key] === "array" && !persona[key].length > 0)
@@ -44,13 +37,31 @@
     console.log("handlechange", e.target.value, persona.idiomas.value);
     name = e.target.name;
   };
+
+  const handleSubmit = async (e) => {
+    console.log("entrando a submit",e.target,persona)
+    try {
+      const response = await fetch("http://localhost:9000/svelte-practice", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(persona),
+      });
+      console.log(response);
+      const data = await response.json();
+      console.log("DATA DEL SERVIDOR:",data)
+    } catch (error) {
+      console.log("ERROR :", error);
+    }
+  };
 </script>
 
 <div class="body">
   <h3>Soy el componente BINDINGS y vamos hacer un formulario</h3>
 
   <h5>formulario</h5>
-  <form>
+  <form on:submit|preventDefault={handleSubmit}>
     <span>nombre</span>
     <input
       on:keyup={handleChange}
@@ -171,7 +182,7 @@
       </label>
       <br />
 
-      <button disabled={!isFormValid || !isAgree}>Enviar</button>
+      <button type="submit" disabled={!isFormValid || !isAgree}>Enviar</button>
     </div>
   </form>
   <h5>ESTADO DEL COMPONENTE</h5>

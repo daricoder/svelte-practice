@@ -195,8 +195,4 @@
     background: rgb(52, 118, 116);
     color: black;
   }
-
-  p.error {
-    color: red;
-  }
 </style>

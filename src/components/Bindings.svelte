@@ -86,7 +86,7 @@
     <br />
 
     <span>pais</span>
-    <select name="pais"  bind:value={persona.pais}>
+    <select name="pais" bind:value={persona.pais}>
       {#each paises as pais, i}
         <option value={pais}>
           {pais + i}
@@ -110,11 +110,7 @@
 
     <div>
       <h4>Idiomas</h4>
-      <select
-        name="idiomas"
-        bind:value={persona.idiomas}
-        multiple
-      >
+      <select name="idiomas" bind:value={persona.idiomas} multiple>
         {#each idiomas as idioma}
           <option value={{ idioma, nivel: 5 }}>{idioma}</option>
         {/each}
@@ -138,16 +134,8 @@
           />
         </div>
       {/each}
+
       <br />
-
-      <!--       {#each persona.idiomas.value ? persona.idiomas.value : [] as idioma}
-        <label>
-          <span>{idioma.idioma}</span>
-          <span>{idioma.nivel}</span>
-          <input type="range" bind:value={idioma.nivel} min="0" max="10" />
-        </label>
-      {/each} -->
-
       <br />
 
       <label>

@@ -33,13 +33,8 @@
     return true;
   };
 
-  const handleChange = (e) => {
-    console.log("handlechange", e.target.value, persona.idiomas.value);
-    name = e.target.name;
-  };
-
   const handleSubmit = async (e) => {
-    console.log("entrando a submit",e.target,persona)
+    console.log("entrando a submit", e.target, persona);
     try {
       const response = await fetch("http://localhost:9000/svelte-practice", {
         method: "POST",
@@ -50,7 +45,7 @@
       });
       console.log(response);
       const data = await response.json();
-      console.log("DATA DEL SERVIDOR:",data)
+      console.log("DATA DEL SERVIDOR:", data);
     } catch (error) {
       console.log("ERROR :", error);
     }
@@ -63,35 +58,19 @@
   <h5>formulario</h5>
   <form on:submit|preventDefault={handleSubmit}>
     <span>nombre</span>
-    <input
-      on:keyup={handleChange}
-      name="nombre"
-      type="text"
-      bind:value={persona.nombre}
-    />
+    <input name="nombre" type="text" bind:value={persona.nombre} />
     <br />
     <span>email</span>
-    <input
-      on:keyup={handleChange}
-      name="email"
-      type="text"
-      bind:value={persona.email}
-    />
+    <input name="email" type="text" bind:value={persona.email} />
     <br />
 
     <span>edad</span>
-    <input
-      on:keyup={handleChange}
-      name="edad"
-      type="number"
-      bind:value={persona.edad}
-    />
+    <input name="edad" type="number" bind:value={persona.edad} />
     <br />
 
     <span>SEXO :</span>
     <span>Masculino</span>
     <input
-      on:change={handleChange}
       name="sexo"
       type="radio"
       bind:group={persona.sexo}
@@ -99,7 +78,6 @@
     />
     <span>Femenino</span>
     <input
-      on:change={handleChange}
       name="sexo"
       type="radio"
       bind:group={persona.sexo}
@@ -108,7 +86,7 @@
     <br />
 
     <span>pais</span>
-    <select name="pais" on:change={handleChange} bind:value={persona.pais}>
+    <select name="pais"  bind:value={persona.pais}>
       {#each paises as pais, i}
         <option value={pais}>
           {pais + i}
@@ -124,7 +102,6 @@
           bind:group={persona.redes_sociales}
           value={red}
           name="redes_sociales"
-          on:change={handleChange}
         />
         <span>{red}</span>
       {/each}
@@ -135,7 +112,6 @@
       <h4>Idiomas</h4>
       <select
         name="idiomas"
-        on:change={handleChange}
         bind:value={persona.idiomas}
         multiple
       >
@@ -156,7 +132,6 @@
           <input
             type="range"
             name="idiomas"
-            on:change={handleChange}
             bind:value={idioma.nivel}
             min="0"
             max="10"

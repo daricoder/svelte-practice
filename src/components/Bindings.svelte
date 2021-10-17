@@ -11,13 +11,25 @@
 
   $: isFormValid = validateForm(persona);
   let isAgree = false;
-  let name;
 
   const paises = ["Estados Unidos", "Ecuador", "Peru", "Chile", "Argentina"];
   const redes_sociales = ["telegram", "instagram", "facebook", "whatsapp"];
   const idiomas = ["English", "Español"];
 
   // Usando la reactividad no tengo que usar handlekeyup para manejar directamente como en angular era.
+
+// PRACTICA DE REGEX replace es un metodo de un sring que remplaza la coincidencia del regex que mandes por el sring que le mandes
+// puedo hacer muchos test de regex para remplazar por lo que quiera y no permitir al usuario poner cosas que no son.
+/*   $: if (persona.nombre) {
+    console.log("persona.nombre",persona.nombre)
+    
+    if (/^ /.test(persona.nombre)) {
+      persona.nombre=""
+    }else if(/  /.test(persona.nombre)){
+      persona.nombre=persona.nombre.replace(/  /," ")
+    }
+
+  } */
 
   const validateForm = (object) => {
     for (const key in persona) {

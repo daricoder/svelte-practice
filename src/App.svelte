@@ -14,7 +14,8 @@ let saludo = "Hola mundo"
     about
     </Link>
 
-    <Route path="/about" component={About}>
+    <Route path="/about" let:location>
+        <About {location}></About>
     </Route>
 
     <Route path="/">
